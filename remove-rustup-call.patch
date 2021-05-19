@@ -1,0 +1,16 @@
+diff --git a/runtime/near-test-contracts/build.rs b/runtime/near-test-contracts/build.rs
+index 116c61cf..298c72dd 100644
+--- a/runtime/near-test-contracts/build.rs
++++ b/runtime/near-test-contracts/build.rs
+@@ -9,9 +9,11 @@ fn main() {
+ }
+ 
+ fn try_main() -> io::Result<()> {
++    /*
+     let mut cmd = Command::new("rustup");
+     cmd.args(&["target", "add", "wasm32-unknown-unknown"]);
+     check_status(cmd)?;
++    */
+ 
+     build_contract("./test-contract-rs", &[], "test_contract_rs")?;
+     build_contract(
