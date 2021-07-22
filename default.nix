@@ -8,12 +8,21 @@
 , perl
 , pkg-config
 , rustPlatform
+, CoreFoundation
+, IOKit
 }:
 rustPlatform.buildRustPackage rec {
   pname = "neard";
   version = "1.19.2";
 
-  buildInputs = [ llvm llvmPackages.libclang.lib openssl ];
+  buildInputs = [
+    llvm
+    llvmPackages.libclang.lib
+    openssl
+  ] ++ lib.optionals stdenv.isDarwin [
+    CoreFoundation
+    IOKit
+  ];
   nativeBuildInputs = [ clang llvm.out perl pkg-config ];
 
   LIBCLANG_PATH = "${llvmPackages.libclang.lib}/lib";

@@ -12,4 +12,7 @@ let
     rustc = wasmRust;
   };
 in
-pkgs.callPackage ./default.nix { inherit rustPlatform; }
+pkgs.callPackage ./default.nix {
+  inherit rustPlatform;
+  inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation IOKit;
+}
