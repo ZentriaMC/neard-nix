@@ -1,4 +1,4 @@
-{ pkgs
+{ fetchFromGitHub
 , stdenv
 , lib
 , clang
@@ -8,43 +8,23 @@
 , perl
 , pkg-config
 , rustPlatform
-, rustc
-  #, wasm-rustc ? (rustc.override {
-  #    stdenv = pkgs.stdenv.override {
-  #      targetPlatform = {
-  #        isRedox = false;
-  #        parsed = {
-  #          cpu = { name = "wasm32"; };
-  #          vendor = { name = "unknown"; };
-  #          kernel = { name = "unknown"; };
-  #          abi = { name = "unknown"; };
-  #        };
-  #      };
-  #    };
-  #  })
 }:
 rustPlatform.buildRustPackage rec {
   pname = "neard";
-  version = "1.19.0";
+  version = "1.19.2";
 
-  buildInputs = [ llvm openssl ];
+  buildInputs = [ llvm llvmPackages.libclang.lib openssl ];
   nativeBuildInputs = [ clang llvm.out perl pkg-config ];
 
-  LIBCLANG_PATH = "${llvmPackages.libclang}/lib";
+  LIBCLANG_PATH = "${llvmPackages.libclang.lib}/lib";
   buildAndTestSubdir = "neard";
 
-  src = pkgs.fetchFromGitHub {
+  src = fetchFromGitHub {
     owner = "near";
     repo = "nearcore";
     rev = version;
-    sha256 = "0y3ads73nqdr4hmqzff7030l3hrwidns13dvjp9nhh366ca7ig6z";
+    sha256 = "1qdzzrfy0ldm8p87cj1py0zp16lz7gsv5pdv6nkap0y6f51i0k24";
   };
-
-  # Concatenate all lockfiles so all needed dependencies end up being vendored
-  #cargoUpdateHook = ''
-  #  find . -name Cargo.lock -type f -print0 | xargs -0 cat > Cargo_new.lock
-  #  mv Cargo_new.lock Cargo.lock
-  #'';
 
   patches = [
     # runtime/near-test-contracts/build.rs calls `rustup target add wasm32-unknown-unknown` - this
@@ -52,8 +32,24 @@ rustPlatform.buildRustPackage rec {
     ./remove-rustup-call.patch
   ];
 
-  cargoSha256 = "0hmnq7sii0hspbghi75nax8jdnv1dqv3jjsbkys57sjq8w1g47yz";
+  cargoSha256 = "1xqdpn6xd9xnwc2iblcw3lxmwxx62wb31c64gzfy68abrws8639b";
 
   # WARNING 2021-05-16: takes ram massively, >14GiB for purely linking (debug build)!
+  # NOTE 2021-07-22: vendoring seems to be broken
+  #    error: failed to run custom build command for `near-test-contracts v0.0.0 (/build/source/runtime/near-test-contracts)`
+  #
+  #    Caused by:
+  #      process didn't exit successfully: `/build/source/target/release/build/near-test-contracts-e7d9e8d0fe5c3dd3/build-script-build` (exit status: 1)
+  #      --- stderr
+  #      error: failed to select a version for the requirement `serde_json = "=1.0.62"`
+  #      candidate versions found which didn't match: 1.0.63
+  #      location searched: directory source `/build/neard-1.19.2-vendor.tar.gz` (which is replacing registry `https://github.com/rust-lang/crates.io-index`)
+  #      required by package `test-contract-rs v0.1.0 (/build/source/runtime/near-test-contracts/test-contract-rs)`
+  #      perhaps a crate was updated and forgotten to be re-vendored?
+  #      command `"cargo" "build" "--target=wasm32-unknown-unknown" "--release"` exited with non-zero status: ExitStatus(ExitStatus(25856))
   doCheck = false;
+
+  meta = with lib; {
+    platforms = platforms.linux ++ platforms.darwin;
+  };
 }
