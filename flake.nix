@@ -16,7 +16,7 @@
       supportedSystems = [
 # NOTE(2021-07-28): Does not build on aarch64-darwin, use --system x86_64-darwin
 # > error[E0425]: cannot find function `get_fault_info` in this scope
-# >    --> /private/tmp/nix-build-neard-1.19.2.drv-0/neard-1.19.2-vendor.tar.gz/wasmer-runtime-core-near/src/fault.rs:289:21
+# >    --> /private/tmp/nix-build-neard-1.20.0.drv-0/neard-1.20.0-vendor.tar.gz/wasmer-runtime-core-near/src/fault.rs:289:21
 # >     |
 # > 289 |         let fault = get_fault_info(siginfo as _, ucontext);
 # >     |                     ^^^^^^^^^^^^^^ not found in this scope
