@@ -13,7 +13,7 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "neard";
-  version = "1.19.2";
+  version = "1.20.0";
 
   buildInputs = [
     llvm
@@ -32,7 +32,7 @@ rustPlatform.buildRustPackage rec {
     owner = "near";
     repo = "nearcore";
     rev = version;
-    sha256 = "1qdzzrfy0ldm8p87cj1py0zp16lz7gsv5pdv6nkap0y6f51i0k24";
+    sha256 = "sha256-u26/RENrh66j94nKalFU0zw9AcjaKIEL6BbpylIfzxs=";
   };
 
   patches = [
@@ -41,7 +41,7 @@ rustPlatform.buildRustPackage rec {
     ./remove-rustup-call.patch
   ];
 
-  cargoSha256 = "1xqdpn6xd9xnwc2iblcw3lxmwxx62wb31c64gzfy68abrws8639b";
+  cargoSha256 = "sha256-qxJPh1KUqQj/TCV/71JMfGSKf8NDOMAQrxhC/5Odnhw=";
 
   # WARNING 2021-05-16: takes ram massively, >14GiB for purely linking (debug build)!
   # NOTE 2021-07-22: vendoring seems to be broken
