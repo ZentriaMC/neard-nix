@@ -13,7 +13,7 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "neard";
-  version = "1.20.0";
+  version = "1.23.0-rc.1";
 
   buildInputs = [
     llvm
@@ -32,16 +32,10 @@ rustPlatform.buildRustPackage rec {
     owner = "near";
     repo = "nearcore";
     rev = version;
-    sha256 = "sha256-u26/RENrh66j94nKalFU0zw9AcjaKIEL6BbpylIfzxs=";
+    sha256 = "sha256-hM2g1+dax27osNmalaP+VTqT35F73alrdlmIfBcXgo4=";
   };
 
-  patches = [
-    # runtime/near-test-contracts/build.rs calls `rustup target add wasm32-unknown-unknown` - this
-    # derivation provides a wasm32 toolchain on its own.
-    ./remove-rustup-call.patch
-  ];
-
-  cargoSha256 = "sha256-qxJPh1KUqQj/TCV/71JMfGSKf8NDOMAQrxhC/5Odnhw=";
+  cargoSha256 = "sha256-TXDQ1f5YaOQeIL4ZqZFw4keQkawKHffM5jXhPlYQHiM=";
 
   # WARNING 2021-05-16: takes ram massively, >14GiB for purely linking (debug build)!
   # NOTE 2021-07-22: vendoring seems to be broken
