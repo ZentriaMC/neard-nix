@@ -50,7 +50,7 @@
 
         packages.neard = pkgs.callPackage ./default.nix {
           inherit rustPlatform;
-          inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation IOKit;
+          inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation IOKit Security;
         };
 
         defaultPackage = packages.neard;

@@ -10,6 +10,7 @@
 , rustPlatform
 , CoreFoundation
 , IOKit
+, Security
 }:
 rustPlatform.buildRustPackage rec {
   pname = "neard";
@@ -22,9 +23,11 @@ rustPlatform.buildRustPackage rec {
   ] ++ lib.optionals stdenv.isDarwin [
     CoreFoundation
     IOKit
+    Security
   ];
   nativeBuildInputs = [ clang llvm.out perl pkg-config ];
 
+  OPENSSL_NO_VENDOR = 1; # we want to link to OpenSSL provided by Nix
   LIBCLANG_PATH = "${llvmPackages.libclang.lib}/lib";
   buildAndTestSubdir = "neard";
 
