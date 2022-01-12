@@ -14,7 +14,7 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "neard";
-  version = "1.23.0-rc.1";
+  version = "1.23.1";
 
   buildInputs = [
     llvm
@@ -35,10 +35,26 @@ rustPlatform.buildRustPackage rec {
     owner = "near";
     repo = "nearcore";
     rev = version;
-    sha256 = "sha256-hM2g1+dax27osNmalaP+VTqT35F73alrdlmIfBcXgo4=";
+    sha256 = "sha256-GH7BdYtKZRnb3tm6S0rRzTY+lCD9cxyS7kFQYSZojm4=";
   };
 
-  cargoSha256 = "sha256-TXDQ1f5YaOQeIL4ZqZFw4keQkawKHffM5jXhPlYQHiM=";
+  cargoSha256 = "sha256-md40q0QMA0t1MqgXene9fa72gawyYJFhyB82/LTSvck=";
+
+  buildPhase = ''
+    runHook preBuild
+
+    make neard
+
+    runHook postBuild
+  '';
+
+  installPhase = ''
+    runHook preInstall
+
+    install -D -m 755 ./target/release/neard $out/bin/neard
+
+    runHook postInstall
+  '';
 
   # WARNING 2021-05-16: takes ram massively, >14GiB for purely linking (debug build)!
   # NOTE 2021-07-22: vendoring seems to be broken
