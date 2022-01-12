@@ -4,7 +4,6 @@
 , clang
 , llvm
 , llvmPackages
-, mold
 , openssl
 , perl
 , pkg-config
@@ -41,12 +40,10 @@ rustPlatform.buildRustPackage rec {
 
   cargoSha256 = "sha256-md40q0QMA0t1MqgXene9fa72gawyYJFhyB82/LTSvck=";
 
-  RUSTFLAGS = if stdenv.isLinux then "-Clinker=clang -Clink-arg=-fuse-ld=${mold}/bin/mold" else null;
-
   buildPhase = ''
     runHook preBuild
 
-    make RUSTFLAGS="$RUSTFLAGS" neard
+    make neard
 
     runHook postBuild
   '';
