@@ -23,17 +23,17 @@ if ! [ -d "${data}" ]; then
 	fi
 
 	# Set up genesis and config
-        mkdir -p "${data}" "${data}/data"
-        curl -o "${data}/genesis.json" "${genesis_url}"
-        curl -o "${data}/config.json" "${config_url}"
+	mkdir -p "${data}" "${data}/data"
+	curl -o "${data}/genesis.json" "${genesis_url}"
+	curl -o "${data}/config.json" "${config_url}"
 
 	# Initialize data dir
-        "${neard}" --home "${data}" init "${init_args[@]}"
+	"${neard}" --home "${data}" init "${init_args[@]}"
 
 	# Download database dump to speed up syncing
-        aria2c --dir="${data}" --continue=true --max-connection-per-server=16 --lowest-speed-limit=10M --max-tries=2147483647 "${dump_url}"
-        pv "${data}/data.tar" | tar -C "${data}/data" -xf -
-        rm "${data}/data.tar"
+	aria2c --dir="${data}" --continue=true --max-connection-per-server=16 --lowest-speed-limit=10M --max-tries=2147483647 "${dump_url}"
+	pv "${data}/data.tar" | tar -C "${data}/data" -xf -
+	rm "${data}/data.tar"
 fi
 
 systemd-run --user --pty --unit="neard-${network}" "${neard}" --home "${data}" run
