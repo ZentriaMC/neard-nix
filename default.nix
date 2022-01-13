@@ -42,7 +42,8 @@ rustPlatform.buildRustPackage rec {
 
   postPatch = ''
     substituteInPlace neard/src/main.rs \
-      --replace 'git_version!(fallback = "unknown")' '"nix:${version}"'
+      --replace 'git_version!(fallback = "unknown")' '"nix:${version}"' \
+      --replace 'use git_version' '//use git_version'
   '';
 
   buildPhase = ''
