@@ -40,6 +40,11 @@ rustPlatform.buildRustPackage rec {
 
   cargoSha256 = "sha256-md40q0QMA0t1MqgXene9fa72gawyYJFhyB82/LTSvck=";
 
+  postPatch = ''
+    substituteInPlace neard/src/main.rs \
+      --replace 'git_version!(fallback = "unknown")' '"nix:${version}"'
+  '';
+
   buildPhase = ''
     runHook preBuild
 
