@@ -53,6 +53,29 @@
           inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation IOKit Security;
         };
 
+        packages.neardDockerImage = pkgs.dockerTools.buildLayeredImage {
+          name = "neard";
+          config = {
+            Env = [
+              "PATH=${pkgs.lib.makeBinPath [ pkgs.dumb-init packages.neard ]}"
+              "HOME=/data"
+            ];
+            ExposedPorts = {
+              "3030/tcp" = { };
+              "24567/tcp" = { };
+            };
+            Volumes = {
+              "/data" = { };
+            };
+            Entrypoint = [ "${pkgs.dumb-init}/bin/dumb-init" "--" ];
+            Cmd = [ "neard" "--home" "/data" "--help" ];
+          };
+
+          extraCommands = ''
+            mkdir data
+          '';
+        };
+
         defaultPackage = packages.neard;
       });
 }
