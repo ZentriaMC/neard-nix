@@ -72,7 +72,12 @@
           };
 
           extraCommands = ''
-            mkdir data
+            mkdir -p data etc/ssl/certs etc/pki/tls/certs
+
+            ln -s ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt etc/ssl/certs/ca-bundle.crt
+            ln -s ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt etc/ssl/certs/ca-certificates.crt
+            ln -s ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt etc/pki/tls/certs/ca-bundle.crt
+            ln -s ${pkgs.cacert.p11kit}/etc/ssl/trust-source etc/ssl/trust-source
           '';
         };
 
