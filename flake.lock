@@ -1,5 +1,20 @@
 {
   "nodes": {
+    "docker-tools": {
+      "locked": {
+        "lastModified": 1642332205,
+        "narHash": "sha256-5S7Gh9lRLfGgUlPiuCnvIYXvun1TNz335Z/rOLvSmb4=",
+        "owner": "ZentriaMC",
+        "repo": "docker-tools",
+        "rev": "24aa170088c8d42446693de6d124e95bb890b3fe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ZentriaMC",
+        "repo": "docker-tools",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "locked": {
         "lastModified": 1638122382,
@@ -33,6 +48,7 @@
     },
     "root": {
       "inputs": {
+        "docker-tools": "docker-tools",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
         "rust-overlay": "rust-overlay"

@@ -4,12 +4,14 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     rust-overlay.url = "github:oxalica/rust-overlay";
+    flake-utils.url = "github:numtide/flake-utils";
+    docker-tools.url = "github:ZentriaMC/docker-tools";
+
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
     rust-overlay.inputs.flake-utils.follows = "flake-utils";
-    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, rust-overlay, flake-utils, ... }:
+  outputs = { self, nixpkgs, rust-overlay, flake-utils, docker-tools, ... }:
     let
       # https://rust-lang.github.io/rustup-components-history/
       rustVersion = "1.56.0";
@@ -72,12 +74,8 @@
           };
 
           extraCommands = ''
-            mkdir -p data etc/ssl/certs etc/pki/tls/certs
-
-            ln -s ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt etc/ssl/certs/ca-bundle.crt
-            ln -s ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt etc/ssl/certs/ca-certificates.crt
-            ln -s ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt etc/pki/tls/certs/ca-bundle.crt
-            ln -s ${pkgs.cacert.p11kit}/etc/ssl/trust-source etc/ssl/trust-source
+            mkdir -p data
+            ${docker-tools.lib.symlinkCACerts { inherit (pkgs) cacert; }}
           '';
         };
 
