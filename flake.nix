@@ -43,18 +43,10 @@
             cargo = toolchain;
             rustc = toolchain;
           };
-
-        stableRustPlatform = mkRustPlatform "stable" "1.56.0";
       in
       rec {
-        devShell = pkgs.mkShell {
-          buildInputs = [
-            stableRustPlatform
-          ];
-        };
-
         packages.neard = pkgs.callPackage ./default.nix {
-          rustPlatform = stableRustPlatform;
+          rustPlatform = mkRustPlatform "stable" "1.56.0";
           inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation IOKit Security;
         };
 
