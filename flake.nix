@@ -13,8 +13,6 @@
 
   outputs = { self, nixpkgs, rust-overlay, flake-utils, docker-tools, ... }:
     let
-      # https://rust-lang.github.io/rustup-components-history/
-      rustVersion = "1.56.0";
       supportedSystems = [
         # NOTE(2021-11-30): Does not build on aarch64-darwin (nor aarch64-linux), use --system x86_64-darwin
         # > Compiling wasmer-compiler-near v2.0.3
@@ -36,27 +34,32 @@
           inherit system overlays;
         };
 
-        rustToolchain = pkgs.rust-bin.stable."${rustVersion}".minimal;
+        # https://rust-lang.github.io/rustup-components-history/
+        mkRustPlatform = flavor: version:
+          let
+            toolchain = pkgs.rust-bin.${flavor}."${version}".minimal;
+          in
+          pkgs.makeRustPlatform {
+            cargo = toolchain;
+            rustc = toolchain;
+          };
 
-        rustPlatform = pkgs.makeRustPlatform {
-          cargo = rustToolchain;
-          rustc = rustToolchain;
-        };
+        stableRustPlatform = mkRustPlatform "stable" "1.56.0";
       in
       rec {
         devShell = pkgs.mkShell {
           buildInputs = [
-            rustToolchain
+            stableRustPlatform
           ];
         };
 
         packages.neard = pkgs.callPackage ./default.nix {
-          inherit rustPlatform;
+          rustPlatform = stableRustPlatform;
           inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation IOKit Security;
         };
 
         packages.neard-rc = pkgs.callPackage ./neard-rc.nix {
-          inherit rustPlatform;
+          rustPlatform = mkRustPlatform "stable" "1.57.0";
           inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation IOKit Security;
         };
 
