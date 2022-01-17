@@ -55,6 +55,11 @@
           inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation IOKit Security;
         };
 
+        packages.neard-rc = pkgs.callPackage ./neard-rc.nix {
+          inherit rustPlatform;
+          inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation IOKit Security;
+        };
+
         packages.neardDockerImage = pkgs.dockerTools.buildLayeredImage {
           name = "neard";
           config = {
