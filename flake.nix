@@ -1,5 +1,5 @@
 {
-  description = "eteu-near-contract";
+  description = "NEAR Protocol validator node & Docker image";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
