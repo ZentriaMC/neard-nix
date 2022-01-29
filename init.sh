@@ -26,13 +26,18 @@ if ! [ -d "${data}" ]; then
 		init_args+=(--account-id "${accountid}")
 	fi
 
+	# Set up genesis
+	mkdir -p "${data}" "${data}/data"
+	if ! [ "${network}" = "localnet" ]; then
+		curl -o "${data}/genesis.json" "${genesis_url}"
+	fi
+
 	# Initialize data dir
 	"${neard}" --home "${data}" init "${init_args[@]}"
 
 	# Set up genesis and config
 	if ! [ "${network}" = "localnet" ]; then
 		mkdir -p "${data}" "${data}/data"
-		curl -o "${data}/genesis.json" "${genesis_url}"
 		curl -o "${data}/config.json" "${config_url}"
 	fi
 
