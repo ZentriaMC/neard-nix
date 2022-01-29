@@ -46,21 +46,10 @@ rustPlatform.buildRustPackage rec {
       --replace 'use git_version' '//use git_version'
   '';
 
-  buildPhase = ''
-    runHook preBuild
-
-    make neard
-
-    runHook postBuild
-  '';
-
-  installPhase = ''
-    runHook preInstall
-
-    install -D -m 755 ./target/release/neard $out/bin/neard
-
-    runHook postInstall
-  '';
+  CARGO_PROFILE_RELEASE_CODEGEN_UNITS = "1";
+  CARGO_PROFILE_RELEASE_LTO = "fat";
+  RUSTFLAGS = "-D warnings";
+  NEAR_RELEASE_BUILD = "release";
 
   # WARNING 2021-05-16: takes ram massively, >14GiB for purely linking (debug build)!
   # NOTE 2021-07-22: vendoring seems to be broken
