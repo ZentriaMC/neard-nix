@@ -47,7 +47,7 @@ rustPlatform.buildRustPackage rec {
   '';
 
   CARGO_PROFILE_RELEASE_CODEGEN_UNITS = "1";
-  CARGO_PROFILE_RELEASE_LTO = "fat";
+  CARGO_PROFILE_RELEASE_LTO = "thin";
   RUSTFLAGS = "-D warnings";
   NEAR_RELEASE_BUILD = "release";
 
