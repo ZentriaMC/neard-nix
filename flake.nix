@@ -55,28 +55,36 @@
           inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation IOKit Security;
         };
 
-        packages.neardDockerImage = pkgs.dockerTools.buildLayeredImage {
-          name = "neard";
-          config = {
-            Env = [
-              "PATH=${pkgs.lib.makeBinPath [ pkgs.dumb-init packages.neard ]}"
-              "HOME=/data"
-            ];
-            ExposedPorts = {
-              "3030/tcp" = { };
-              "24567/tcp" = { };
+        packages.neardDockerImage = pkgs.callPackage
+          ({ lib, cacert, dockerTools, dumb-init, neard }: dockerTools.buildLayeredImage {
+            name = "neard";
+            config = {
+              Env = [
+                "PATH=${lib.makeBinPath [ dumb-init neard ]}"
+                "HOME=/data"
+              ];
+              ExposedPorts = {
+                "3030/tcp" = { };
+                "24567/tcp" = { };
+              };
+              Volumes = {
+                "/data" = { };
+              };
+              Entrypoint = [ "${dumb-init}/bin/dumb-init" "--" ];
+              Cmd = [ "neard" "--home" "/data" "--help" ];
             };
-            Volumes = {
-              "/data" = { };
-            };
-            Entrypoint = [ "${pkgs.dumb-init}/bin/dumb-init" "--" ];
-            Cmd = [ "neard" "--home" "/data" "--help" ];
+
+            extraCommands = ''
+              mkdir -p data
+              ${docker-tools.lib.symlinkCACerts { inherit cacert; }}
+            '';
+          })
+          {
+            inherit (packages) neard;
           };
 
-          extraCommands = ''
-            mkdir -p data
-            ${docker-tools.lib.symlinkCACerts { inherit (pkgs) cacert; }}
-          '';
+        packages.neardRcDockerImage = packages.neardDockerImage.override {
+          neard = packages.neard-rc;
         };
 
         defaultPackage = packages.neard;
