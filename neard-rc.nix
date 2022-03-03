@@ -7,12 +7,12 @@
 , openssl
 , perl
 , pkg-config
-, rustPlatform
 , CoreFoundation
 , IOKit
 , Security
+, crane
 }:
-rustPlatform.buildRustPackage rec {
+crane.buildPackage rec {
   pname = "neard-rc";
   version = "1.25.0-rc.2";
 

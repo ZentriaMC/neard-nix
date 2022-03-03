@@ -6,12 +6,15 @@
     rust-overlay.url = "github:oxalica/rust-overlay";
     flake-utils.url = "github:numtide/flake-utils";
     docker-tools.url = "github:ZentriaMC/docker-tools";
+    crane.url = "github:ipetkov/crane";
 
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
     rust-overlay.inputs.flake-utils.follows = "flake-utils";
+    crane.inputs.nixpkgs.follows = "nixpkgs";
+    crane.inputs.flake-utils.follows = "flake-utils";
   };
 
-  outputs = { self, nixpkgs, rust-overlay, flake-utils, docker-tools, ... }:
+  outputs = { self, nixpkgs, rust-overlay, flake-utils, docker-tools, crane, ... }:
     let
       supportedSystems = [
         # NOTE(2021-11-30): Does not build on aarch64-darwin (nor aarch64-linux), use --system x86_64-darwin
@@ -35,9 +38,11 @@
         };
 
         # https://rust-lang.github.io/rustup-components-history/
+        mkRust' = flavor: version: pkgs.rust-bin.${flavor}."${version}".minimal;
+
         mkRustPlatform = flavor: version:
           let
-            toolchain = pkgs.rust-bin.${flavor}."${version}".minimal;
+            toolchain = mkRust' flavor version;
           in
           pkgs.makeRustPlatform {
             cargo = toolchain;
@@ -51,7 +56,9 @@
         };
 
         packages.neard-rc = pkgs.callPackage ./neard-rc.nix {
-          rustPlatform = mkRustPlatform "stable" "1.57.0";
+          crane = crane.lib.${system}.overrideScope' (super: self: {
+            cargo = mkRust' "stable" "1.57.0";
+          });
           inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation IOKit Security;
         };
 
