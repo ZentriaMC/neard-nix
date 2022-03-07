@@ -14,15 +14,8 @@
   outputs = { self, nixpkgs, rust-overlay, flake-utils, docker-tools, ... }:
     let
       supportedSystems = [
-        # NOTE(2021-11-30): Does not build on aarch64-darwin (nor aarch64-linux), use --system x86_64-darwin
-        # > Compiling wasmer-compiler-near v2.0.3
-        # > error[E0425]: cannot find function `get_fault_info` in this scope
-        # >    --> /private/tmp/nix-build-neard-1.23.0-rc.1.drv-0/neard-1.23.0-rc.1-vendor.tar.gz/wasmer-runtime-core-near/src/fault.rs:304:21
-        # >     |
-        # > 304 |         let fault = get_fault_info(siginfo as _, ucontext);
-        # >     |                     ^^^^^^^^^^^^^^ not found in this scope
-        #"aarch64-darwin"
-        #"aarch64-linux"
+        "aarch64-darwin"
+        "aarch64-linux"
         "x86_64-darwin"
         "x86_64-linux"
       ];
