@@ -76,9 +76,11 @@
             inherit (packages) neard;
           };
 
-        packages.neardRcDockerImage = packages.neardDockerImage.override {
+        packages.neardRcDockerImage = (packages.neardDockerImage.override {
           neard = packages.neard-rc;
-        };
+        }).overrideAttrs (oa: {
+          name = "neard-rc";
+        });
 
         defaultPackage = packages.neard;
       });
