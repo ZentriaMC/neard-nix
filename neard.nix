@@ -68,6 +68,6 @@ rustPlatform.buildRustPackage rec {
 
   meta = with lib; {
     platforms = platforms.linux ++ platforms.darwin;
-    broken = stdenv.isAarch64;
+    broken = stdenv.isAarch64 && !stdenv.isDarwin;
   };
 }
