@@ -14,7 +14,7 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "neard";
-  version = "1.24.0";
+  version = "1.25.0";
 
   buildInputs = [
     llvm
@@ -34,11 +34,11 @@ rustPlatform.buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "near";
     repo = "nearcore";
-    rev = "d8a593d4f09339ced40aafbd9ecec8b39ea48d41"; # GitHub complains "the given path has multiple possibilities: ..."
-    sha256 = "sha256-cGKS66o3uzq2D7x9+WfhGIXC7GGULYddY0pznYA6Pw0=";
+    rev = "9b3d6ba551f561a028f0216051e031bc2ba0c6b7"; # GitHub complains "the given path has multiple possibilities: ..."
+    sha256 = "sha256-7hiBqJLGIf+kNKJvMQ7KtGZm/SWLY3pT7YDlwbm3HDM=";
   };
 
-  cargoSha256 = "sha256-moRlhLvZ+5cDWyJyYqHa/2gsceYnFe5gVcGsDjHbFxY=";
+  cargoSha256 = "sha256-7ORD9rE60YYRxMkSp+hXblHBYyEIq6JE+/cuJiQi7Po=";
 
   postPatch = ''
     substituteInPlace neard/src/main.rs \

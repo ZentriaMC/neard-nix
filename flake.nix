@@ -39,7 +39,7 @@
       in
       rec {
         packages.neard = pkgs.callPackage ./default.nix {
-          rustPlatform = mkRustPlatform "stable" "1.57.0";
+          rustPlatform = mkRustPlatform "stable" "1.58.1";
           inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation IOKit Security;
         };
 
