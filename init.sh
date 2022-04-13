@@ -1,6 +1,4 @@
-#!/usr/bin/env nix-shell
-#!nix-shell -i bash -p aria2 curl
-# shellcheck shell=bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 network="testnet"
@@ -18,7 +16,6 @@ data="$(realpath ./data)/node0"
 neard="$(realpath -- ./result/bin/neard)"
 config_url="https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/${network}/config.json"
 genesis_url="https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/${network}/genesis.json"
-dump_url="https://near-protocol-public.s3-accelerate.amazonaws.com/backups/${network}/rpc/data.tar"
 
 if ! [ -d "${data}" ]; then
 	init_args=(--chain-id "${network}")
@@ -43,9 +40,8 @@ if ! [ -d "${data}" ]; then
 
 	# Download database dump to speed up syncing
 	if ! [ "${network}" = "localnet" ]; then
-		aria2c --dir="${data}" --continue=true --max-connection-per-server=16 --lowest-speed-limit=10M --max-tries=2147483647 "${dump_url}"
-		pv "${data}/data.tar" | tar -C "${data}/data" -xf -
-		rm "${data}/data.tar"
+		dump_version="$(s5cmd --no-sign-request cat "s3://near-protocol-public/backups/${network}/rpc/latest")"
+		s5cmd --no-sign-request cp "s3://near-protocol-public/backups/${network}/rpc/${dump_version}/*" "${data}/data"
 	fi
 fi
 

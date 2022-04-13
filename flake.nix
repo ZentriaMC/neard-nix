@@ -83,5 +83,12 @@
         });
 
         defaultPackage = packages.neard;
+
+        devShell = pkgs.mkShell {
+          buildInputs = [
+            pkgs.curl
+            pkgs.s5cmd
+          ];
+        };
       });
 }
