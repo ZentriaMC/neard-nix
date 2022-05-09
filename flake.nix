@@ -90,5 +90,12 @@
             pkgs.s5cmd
           ];
         };
+
+        devShells.ci = pkgs.mkShell {
+          buildInputs = [
+            pkgs.cachix
+            pkgs.jq
+          ];
+        };
       });
 }
