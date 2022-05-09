@@ -14,7 +14,9 @@ nix_flags=(
 root="$(git rev-parse --show-toplevel)"
 cache="zentria-near"
 drvs=(
+	neard.cargoDeps
 	neard
+	neard-rc.cargoDeps
 	neard-rc
 )
 
