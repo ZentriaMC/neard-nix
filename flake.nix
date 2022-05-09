@@ -49,9 +49,8 @@
         };
 
         packages.neardDockerImage = pkgs.callPackage
-          ({ lib, cacert, dockerTools, dumb-init, neard }: dockerTools.buildLayeredImage {
-            name = "neard";
-            tag = neard.version;
+          ({ lib, cacert, dockerTools, dumb-init, neard, name ? "neard", tag ? neard.version }: dockerTools.buildLayeredImage {
+            inherit name tag;
             config = {
               Env = [
                 "PATH=${lib.makeBinPath [ dumb-init neard ]}"
@@ -77,10 +76,10 @@
             inherit (packages) neard;
           };
 
-        packages.neardRcDockerImage = (packages.neardDockerImage.override {
+        packages.neardRcDockerImage = (packages.neardDockerImage.override rec {
           neard = packages.neard-rc;
-        }).overrideAttrs (oa: {
           name = "neard-rc";
+          tag = neard.version;
         });
 
         defaultPackage = packages.neard;
