@@ -51,6 +51,7 @@
         packages.neardDockerImage = pkgs.callPackage
           ({ lib, cacert, dockerTools, dumb-init, neard }: dockerTools.buildLayeredImage {
             name = "neard";
+            tag = neard.version;
             config = {
               Env = [
                 "PATH=${lib.makeBinPath [ dumb-init neard ]}"
