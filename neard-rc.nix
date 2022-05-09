@@ -34,7 +34,7 @@ rustPlatform.buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "near";
     repo = "nearcore";
-    rev = version;
+    rev = "refs/tags/${version}";
     sha256 = "sha256-8C2ZXeax/b7Vlj1c0MrT8aQAKMCQRoQFBbPLDB0Xxx4=";
   };
 

@@ -34,7 +34,7 @@ rustPlatform.buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "near";
     repo = "nearcore";
-    rev = "9b3d6ba551f561a028f0216051e031bc2ba0c6b7"; # GitHub complains "the given path has multiple possibilities: ..."
+    rev = "refs/tags/${version}";
     sha256 = "sha256-7hiBqJLGIf+kNKJvMQ7KtGZm/SWLY3pT7YDlwbm3HDM=";
   };
 
