@@ -96,6 +96,7 @@
           buildInputs = [
             pkgs.cachix
             pkgs.jq
+            pkgs.skopeo
           ];
         };
       });
