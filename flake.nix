@@ -65,7 +65,6 @@
               };
               Labels = {
                 "org.opencontainers.image.source" = "https://github.com/ZentriaMC/neard-nix";
-                "org.opencontainers.image.revision" = self.rev or "dirty";
               };
               Entrypoint = [ "${dumb-init}/bin/dumb-init" "--" ];
               Cmd = [ "neard" "--home" "/data" "--help" ];
