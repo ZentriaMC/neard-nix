@@ -1,0 +1,73 @@
+name: "Build and push neard-nix cache & Docker images"
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    permissions:
+      packages: write
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout code repository"
+        uses: "actions/checkout@v3"
+
+      - name: "Install Nix"
+        uses: "cachix/install-nix-action@v17"
+        with:
+          extra_nix_config: |-
+            experimental-features = nix-command flakes
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Setup Cachix"
+        uses: "cachix/cachix-action@v10"
+        with:
+          name: zentria-near
+
+      - name: "Build neard"
+        run: |-
+          set -euo pipefail
+
+          nix build --no-link --print-build-logs .#neard
+
+      - name: "Build neard-rc"
+        run: |-
+          set -euo pipefail
+
+          nix build --no-link --print-build-logs .#neard-rc
+
+      - name: "Push cache"
+        if: "github.event_name == 'push' && github.ref == 'refs/heads/master'"
+        run: |-
+          set -euo pipefail
+
+          # This will re-run builds, but since neard derivations were built previously,
+          # it's essentially only pushing a cache
+          export CACHIX_AUTH_TOKEN="${{ secrets.CACHIX_AUTH_TOKEN }}"
+          if [ -n "${CACHIX_AUTH_TOKEN}" ]; then
+            nix develop .#ci --command "./ci/build_publish_cache.sh"
+          fi
+
+      - name: "Build & push Docker images"
+        if: "github.event_name == 'push' && github.ref == 'refs/heads/master'"
+        run: |-
+          set -euo pipefail
+          set -x
+
+          : "${TMPDIR:=$(mktemp -d)}"
+          export XDG_RUNTIME_DIR="${TMPDIR}/xdg"
+          mkdir -p "${XDG_RUNTIME_DIR}"
+          echo '${{ secrets.GHCR_PAT }}'       | nix develop .#ci --command skopeo --tmpdir=$TMPDIR login ghcr.io --username='${{ github.actor }}' --password-stdin
+          echo '${{ secrets.DOCKER_HUB_PAT }}' | nix develop .#ci --command skopeo --tmpdir=$TMPDIR login docker.io --username='${{ secrets.DOCKER_HUB_USERNAME }}' --password-stdin
+
+          repositories=(
+            ghcr.io/zentriamc/neard-nix/neard
+            docker.io/zentria/neard-nix
+          )
+          for repository in "${repositories[@]}"; do
+            env DOCKER_REPOSITORY="${repository}" \
+              nix develop .#ci --command "./ci/build_publish_docker_images.sh"
+          done
