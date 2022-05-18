@@ -49,11 +49,11 @@
         };
 
         packages.neardDockerImage = pkgs.callPackage
-          ({ lib, cacert, dockerTools, dumb-init, neard, name ? "neard", tag ? neard.version }: dockerTools.buildLayeredImage {
+          ({ lib, cacert, dockerTools, dumb-init, neard, s5cmd, name ? "neard", tag ? neard.version }: dockerTools.buildLayeredImage {
             inherit name tag;
             config = {
               Env = [
-                "PATH=${lib.makeBinPath [ dumb-init neard ]}"
+                "PATH=${lib.makeBinPath [ dumb-init neard s5cmd ]}"
                 "HOME=/data"
               ];
               ExposedPorts = {
