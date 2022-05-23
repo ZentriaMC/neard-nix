@@ -54,7 +54,10 @@
           ({ lib
            , runCommandNoCC
            , dockerTools
+           , bash
            , cacert
+           , coreutils
+           , curl
            , dumb-init
            , iana-etc
            , neard
@@ -92,6 +95,9 @@
                   targetDir = "$out/usr";
                   paths = {
                     bin = [
+                      bash
+                      coreutils
+                      curl
                       dumb-init
                       neard
                       s5cmd
