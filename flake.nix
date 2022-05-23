@@ -9,6 +9,8 @@
 
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
     rust-overlay.inputs.flake-utils.follows = "flake-utils";
+    docker-tools.inputs.nixpkgs.follows = "nixpkgs";
+    docker-tools.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs = { self, nixpkgs, rust-overlay, flake-utils, docker-tools, ... }:
@@ -49,7 +51,18 @@
         };
 
         packages.neardDockerImage = pkgs.callPackage
-          ({ lib, cacert, dockerTools, dumb-init, neard, s5cmd, name ? "neard", tag ? neard.version }: dockerTools.buildLayeredImage {
+          ({ lib
+           , runCommandNoCC
+           , dockerTools
+           , cacert
+           , dumb-init
+           , iana-etc
+           , neard
+           , s5cmd
+           , tzdata
+           , name ? "neard"
+           , tag ? neard.version
+           }: dockerTools.buildLayeredImage {
             inherit name tag;
             config = {
               Env = [
@@ -66,14 +79,47 @@
               Labels = {
                 "org.opencontainers.image.source" = "https://github.com/ZentriaMC/neard-nix";
               };
-              Entrypoint = [ "${dumb-init}/bin/dumb-init" "--" ];
+              Entrypoint = [ "/usr/bin/dumb-init" "--" ];
               Cmd = [ "neard" "--home" "/data" "--help" ];
             };
 
-            extraCommands = ''
-              mkdir -p data
-              ${docker-tools.lib.symlinkCACerts { inherit cacert; }}
-            '';
+            contents =
+              let
+                inherit (docker-tools.lib) setupFHSScript symlinkCACerts;
+
+                fhsScript = setupFHSScript {
+                  inherit pkgs;
+                  targetDir = "$out/usr";
+                  paths = {
+                    bin = [
+                      dumb-init
+                      neard
+                      s5cmd
+                    ];
+                  };
+                };
+              in
+              [
+                dockerTools.usrBinEnv
+                (runCommandNoCC "neard-nix-base" { } ''
+                  mkdir -p $out/data
+
+                  ${fhsScript}
+                  ln -s usr/bin $out/bin
+                  ln -s bin $out/usr/sbin
+                  ln -s usr/bin $out/sbin
+                  ln -s usr/lib $out/lib
+                  ln -s usr/lib $out/lib64
+
+                  ${symlinkCACerts { inherit cacert; targetDir = "$out"; }}
+
+                  ln -s ${tzdata}/share/zoneinfo $out/etc/zoneinfo
+                  ln -s /etc/zoneinfo/UTC $out/etc/localtime
+                  echo "ID=distroless" > $out/etc/os-release
+                  ln -s ${iana-etc}/etc/protocols $out/etc/protocols
+                  ln -s ${iana-etc}/etc/services $out/etc/services
+                '')
+              ];
           })
           {
             inherit (packages) neard;

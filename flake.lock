@@ -1,12 +1,17 @@
 {
   "nodes": {
     "docker-tools": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
       "locked": {
-        "lastModified": 1642332205,
-        "narHash": "sha256-5S7Gh9lRLfGgUlPiuCnvIYXvun1TNz335Z/rOLvSmb4=",
+        "lastModified": 1645317435,
+        "narHash": "sha256-ftMNLgziaUzkP/YcOzhZdl4r/7khs6XDs9z1j66sQA8=",
         "owner": "ZentriaMC",
         "repo": "docker-tools",
-        "rev": "24aa170088c8d42446693de6d124e95bb890b3fe",
+        "rev": "24e5e999e9910eddbbe68a98c31c979e72961dbf",
         "type": "github"
       },
       "original": {
