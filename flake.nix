@@ -69,7 +69,7 @@
             inherit name tag;
             config = {
               Env = [
-                "PATH=${lib.makeBinPath [ dumb-init neard s5cmd ]}"
+                "PATH=/usr/bin"
                 "HOME=/data"
               ];
               ExposedPorts = {
@@ -106,7 +106,6 @@
                 };
               in
               [
-                dockerTools.usrBinEnv
                 (runCommandNoCC "neard-nix-base" { } ''
                   mkdir -p $out/data
 
