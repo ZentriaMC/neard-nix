@@ -49,9 +49,6 @@ rustPlatform.buildRustPackage rec {
   CARGO_PROFILE_RELEASE_LTO = "thin";
   RUSTFLAGS = "-D warnings";
   NEAR_RELEASE_BUILD = "release";
-  cargoBuildFlags = [
-    "--features=nightly,performance_stats,memory_stats"
-  ];
 
   # WARNING 2021-05-16: takes ram massively, >14GiB for purely linking (debug build)!
   # NOTE 2021-07-22: vendoring seems to be broken
