@@ -35,6 +35,29 @@
         "type": "github"
       }
     },
+    "nearkit": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1654499343,
+        "narHash": "sha256-lIAXXFpQlSByDzZ1DrCkchf/Nej0zHTNzdp8/jG/jAI=",
+        "owner": "eteu-technologies",
+        "repo": "nearkit",
+        "rev": "52be74763d0a418f8be9058bbc4a812925b8c460",
+        "type": "github"
+      },
+      "original": {
+        "owner": "eteu-technologies",
+        "repo": "nearkit",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1652252629,
@@ -55,6 +78,7 @@
       "inputs": {
         "docker-tools": "docker-tools",
         "flake-utils": "flake-utils",
+        "nearkit": "nearkit",
         "nixpkgs": "nixpkgs",
         "rust-overlay": "rust-overlay"
       }
