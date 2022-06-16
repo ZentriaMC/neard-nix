@@ -6,17 +6,14 @@
     rust-overlay.url = "github:oxalica/rust-overlay";
     flake-utils.url = "github:numtide/flake-utils";
     docker-tools.url = "github:ZentriaMC/docker-tools";
-    nearkit.url = "github:eteu-technologies/nearkit";
 
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
     rust-overlay.inputs.flake-utils.follows = "flake-utils";
     docker-tools.inputs.nixpkgs.follows = "nixpkgs";
     docker-tools.inputs.flake-utils.follows = "flake-utils";
-    nearkit.inputs.nixpkgs.follows = "nixpkgs";
-    nearkit.inputs.flake-utils.follows = "flake-utils";
   };
 
-  outputs = { self, nixpkgs, rust-overlay, flake-utils, docker-tools, nearkit, ... }:
+  outputs = { self, nixpkgs, rust-overlay, flake-utils, docker-tools, ... }:
     let
       supportedSystems = [
         "aarch64-darwin"
@@ -64,7 +61,6 @@
            , dumb-init
            , iana-etc
            , neard
-           , nearkit
            , s5cmd
            , tzdata
            , name ? "neard"
@@ -104,7 +100,6 @@
                       curl
                       dumb-init
                       neard
-                      nearkit
                       s5cmd
                     ];
                   };
@@ -133,7 +128,6 @@
           })
           {
             inherit (packages) neard;
-            inherit (nearkit.packages.${system}) nearkit;
           };
 
         packages.neardRcDockerImage = (packages.neardDockerImage.override rec {
