@@ -1,5 +1,6 @@
 name: "Build and push neard-nix cache & Docker images"
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
