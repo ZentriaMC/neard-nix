@@ -35,7 +35,7 @@ rustPlatform.buildRustPackage rec {
     owner = "near";
     repo = "nearcore";
     rev = "refs/tags/${version}";
-    sha256 = "sha256-CS8pRHV12vf4kAw/1O3FcK/y6SLb94F5Isemc6qkFqA=";
+    sha256 = "sha256-Ev5/jg4hrUyNCqst8b0mKhC1YG5DTuqzedQH5UO98D8=";
   };
 
   cargoSha256 = "sha256-TyVG4FV8LSsQWmLYYU0KsSVsZ5KWSjgTAvr18sptstY=";
