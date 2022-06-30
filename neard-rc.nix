@@ -38,7 +38,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "sha256-Ev5/jg4hrUyNCqst8b0mKhC1YG5DTuqzedQH5UO98D8=";
   };
 
-  cargoSha256 = "sha256-TyVG4FV8LSsQWmLYYU0KsSVsZ5KWSjgTAvr18sptstY=";
+  cargoPatches = [ ./patches/0001-make-near-test-contracts-optional.patch ];
+  cargoSha256 = "sha256-J/B/mjLUtw+UMbD/4GPAG7jfzoGrYQ2oMnr3KvTpCUk=";
 
   postPatch = ''
     substituteInPlace neard/build.rs \
