@@ -40,7 +40,7 @@ jobs:
 
           nix build --no-link --print-build-logs .#neard-rc
 
-      - name: "Build neard-rc"
+      - name: "Build neard-shardnet"
         run: |-
           set -euo pipefail
 
