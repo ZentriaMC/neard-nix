@@ -50,6 +50,11 @@
           inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation IOKit Security;
         };
 
+        packages.neard-shardnet = pkgs.callPackage ./neard-shardnet.nix {
+          rustPlatform = mkRustPlatform "stable" "1.62.0";
+          inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation DiskArbitration Foundation IOKit Security;
+        };
+
         packages.neardDockerImage = pkgs.callPackage
           ({ lib
            , runCommandNoCC
@@ -133,6 +138,12 @@
         packages.neardRcDockerImage = (packages.neardDockerImage.override rec {
           neard = packages.neard-rc;
           name = "neard-rc";
+          tag = neard.version;
+        });
+
+        packages.neardShardnetDockerImage = (packages.neardDockerImage.override rec {
+          neard = packages.neard-shardnet;
+          name = "neard-shardnet";
           tag = neard.version;
         });
 

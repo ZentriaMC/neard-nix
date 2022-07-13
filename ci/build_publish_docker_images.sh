@@ -28,6 +28,7 @@ root="$(git rev-parse --show-toplevel)"
 drvs=(
         neardDockerImage
         neardRcDockerImage
+        neardShardnetDockerImage
 )
 
 for drv in "${drvs[@]}"; do

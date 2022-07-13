@@ -18,6 +18,8 @@ drvs=(
 	neard
 	neard-rc.cargoDeps
 	neard-rc
+	neard-shardnet.cargoDeps
+	neard-shardnet
 )
 
 # Push Flake inputs to cache
