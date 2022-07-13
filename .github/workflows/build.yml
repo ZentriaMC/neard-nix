@@ -40,6 +40,12 @@ jobs:
 
           nix build --no-link --print-build-logs .#neard-rc
 
+      - name: "Build neard-rc"
+        run: |-
+          set -euo pipefail
+
+          nix build --no-link --print-build-logs .#neard-shardnet
+
       - name: "Push cache"
         if: "github.event_name == 'push' && github.ref == 'refs/heads/master'"
         run: |-
