@@ -6,14 +6,16 @@
     rust-overlay.url = "github:oxalica/rust-overlay";
     flake-utils.url = "github:numtide/flake-utils";
     docker-tools.url = "github:ZentriaMC/docker-tools";
+    naersk.url = "github:nix-community/naersk";
 
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
     rust-overlay.inputs.flake-utils.follows = "flake-utils";
     docker-tools.inputs.nixpkgs.follows = "nixpkgs";
     docker-tools.inputs.flake-utils.follows = "flake-utils";
+    naersk.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, rust-overlay, flake-utils, docker-tools, ... }:
+  outputs = { self, nixpkgs, rust-overlay, flake-utils, docker-tools, naersk, ... }:
     let
       supportedSystems = [
         "aarch64-darwin"
@@ -30,16 +32,24 @@
         };
 
         # https://rust-lang.github.io/rustup-components-history/
-        mkRustPlatform = flavor: version:
+        mkRustBuilders = flavor: version:
           let
             toolchain = pkgs.rust-bin.${flavor}."${version}".minimal.override {
               targets = [ "wasm32-unknown-unknown" ];
             };
           in
-          pkgs.makeRustPlatform {
-            cargo = toolchain;
-            rustc = toolchain;
+          {
+            rustPlatform = pkgs.makeRustPlatform {
+              cargo = toolchain;
+              rustc = toolchain;
+            };
+            naersk = naersk.lib.${system}.override {
+              cargo = toolchain;
+              rustc = toolchain;
+            };
           };
+
+        mkRustPlatform = flavor: version: (mkRustBuilders flavor version).rustPlatform;
       in
       rec {
         packages.neard = pkgs.callPackage ./neard.nix {
