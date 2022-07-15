@@ -8,6 +8,8 @@
 , perl
 , pkg-config
 , rustPlatform
+, naersk
+, callPackage
 , CoreFoundation
 , DiskArbitration
 , Foundation
@@ -43,12 +45,22 @@ rustPlatform.buildRustPackage rec {
     sha256 = "sha256-Y/1jpVD6xUJPez0BNrguCByd41eLCtn62S+iNmk+shQ=";
   };
 
-  cargoPatches = [ ./patches/0001-make-near-test-contracts-optional.patch ];
-  cargoSha256 = "sha256-DHxX1s4sK5ungQqSGiz4Ptk7n0I+7MrWvMJLjs9UFYw=";
+  #cargoPatches = [ ./patches/0001-make-near-test-contracts-optional.patch ];
+  #cargoSha256 = "sha256-DHxX1s4sK5ungQqSGiz4Ptk7n0I+7MrWvMJLjs9UFYw=";
+  cargoSha256 = "sha256-GQ6afHak8GkEsw2ksFzU1RzHZYnKU8DLgt/mcUwDMSw=";
 
   postPatch = ''
     substituteInPlace neard/build.rs \
       --replace 'get_git_version()?' '"nix:${version}"'
+
+    substituteInPlace runtime/near-test-contracts/build.rs \
+      --replace 'fn try_main() -> Result<(), Error> {' 'fn try_main_DISABLED() -> Result<(), Error> {'
+
+    echo 'fn try_main() -> Result<(), Error> { Ok(()) }' >> runtime/near-test-contracts/build.rs
+
+    pushd runtime/near-test-contracts/res
+    ${lib.concatStringsSep "\n" (lib.mapAttrsToList (k: v: "ln -s ${v} ${k}.wasm") passthru.contracts)}
+    popd
   '';
 
   CARGO_PROFILE_RELEASE_CODEGEN_UNITS = "1";
@@ -58,20 +70,17 @@ rustPlatform.buildRustPackage rec {
 
   cargoBuildFlags = lib.optional (features != [ ]) "--features=${lib.concatStringsSep "," features}";
 
+  passthru.contracts = import ./misc/build-test-contracts.nix { inherit lib naersk callPackage src version; } ({ contract, ... }: [
+    (contract "test-contract-rs" "test_contract_rs" [ "latest_protocol" ])
+    (contract "test-contract-rs" "base_test_contract_rs" [ ])
+    (contract "test-contract-rs" "nightly_test_contract_rs" [ "latest_protocol" "nightly" ])
+    (contract "contract-for-fuzzing-rs" "contract_for_fuzzing_rs" [ ])
+    (contract "estimator-contract" "stable_estimator_contract" [ ])
+    (contract "estimator-contract" "nightly_estimator_contract" [ "nightly" ])
+  ]);
+
   # WARNING 2021-05-16: takes ram massively, >14GiB for purely linking (debug build)!
-  # NOTE 2021-07-22: vendoring seems to be broken
-  #    error: failed to run custom build command for `near-test-contracts v0.0.0 (/build/source/runtime/near-test-contracts)`
-  #
-  #    Caused by:
-  #      process didn't exit successfully: `/build/source/target/release/build/near-test-contracts-e7d9e8d0fe5c3dd3/build-script-build` (exit status: 1)
-  #      --- stderr
-  #      error: failed to select a version for the requirement `serde_json = "=1.0.62"`
-  #      candidate versions found which didn't match: 1.0.63
-  #      location searched: directory source `/build/neard-1.19.2-vendor.tar.gz` (which is replacing registry `https://github.com/rust-lang/crates.io-index`)
-  #      required by package `test-contract-rs v0.1.0 (/build/source/runtime/near-test-contracts/test-contract-rs)`
-  #      perhaps a crate was updated and forgotten to be re-vendored?
-  #      command `"cargo" "build" "--target=wasm32-unknown-unknown" "--release"` exited with non-zero status: ExitStatus(ExitStatus(25856))
-  doCheck = false;
+  doCheck = true;
 
   meta = with lib; {
     platforms = platforms.linux ++ platforms.darwin;

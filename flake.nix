@@ -63,7 +63,7 @@
         };
 
         packages.neard-shardnet = pkgs.callPackage ./neard-shardnet.nix {
-          rustPlatform = mkRustPlatform "stable" "1.62.0";
+          inherit (mkRustBuilders "stable" "1.62.0") rustPlatform naersk;
           inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation DiskArbitration Foundation IOKit Security;
         };
 
