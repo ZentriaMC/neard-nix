@@ -32,7 +32,9 @@
         # https://rust-lang.github.io/rustup-components-history/
         mkRustPlatform = flavor: version:
           let
-            toolchain = pkgs.rust-bin.${flavor}."${version}".minimal;
+            toolchain = pkgs.rust-bin.${flavor}."${version}".minimal.override {
+              targets = [ "wasm32-unknown-unknown" ];
+            };
           in
           pkgs.makeRustPlatform {
             cargo = toolchain;
