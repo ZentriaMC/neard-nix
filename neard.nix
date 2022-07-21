@@ -36,10 +36,10 @@ rustPlatform.buildRustPackage rec {
     owner = "near";
     repo = "nearcore";
     rev = "refs/tags/${version}";
-    sha256 = "sha256-B9HqUa0mBSvsCPzxPt4NqpV99rV4lmQ9Q/z9lxob9oM=";
+    hash = "sha256-B9HqUa0mBSvsCPzxPt4NqpV99rV4lmQ9Q/z9lxob9oM=";
   };
 
-  cargoSha256 = "sha256-yZ3gMegub2/1z34fv+lAz8kx098/fd+sbOFHS4q433A=";
+  cargoHash = "sha256-yZ3gMegub2/1z34fv+lAz8kx098/fd+sbOFHS4q433A=";
 
   postPatch = ''
     substituteInPlace neard/build.rs \

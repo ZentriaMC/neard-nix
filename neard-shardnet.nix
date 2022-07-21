@@ -40,11 +40,11 @@ rustPlatform.buildRustPackage rec {
     owner = "near";
     repo = "nearcore";
     rev = version;
-    sha256 = "sha256-DashyY5fmAj4Q2DJL326MGZDiLb3tBkxuj572eCBTyI=";
+    hash = "sha256-DashyY5fmAj4Q2DJL326MGZDiLb3tBkxuj572eCBTyI=";
   };
 
   cargoPatches = [ ./patches/0001-make-near-test-contracts-optional.patch ];
-  cargoSha256 = "sha256-1UXhN+gyErnln8yv7fHsGPu632EFHGti9HyQ2500+mE=";
+  cargoHash = "sha256-1UXhN+gyErnln8yv7fHsGPu632EFHGti9HyQ2500+mE=";
 
   postPatch = ''
     substituteInPlace neard/build.rs \
