@@ -17,7 +17,7 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "neard-shardnet";
-  version = "0f81dca95a55f975b6e54fe6f311a71792e21698";
+  version = "0d7f272afabc00f4a076b1c89a70ffc62466efe9";
 
   buildInputs = [
     llvm
@@ -40,11 +40,11 @@ rustPlatform.buildRustPackage rec {
     owner = "near";
     repo = "nearcore";
     rev = version;
-    hash = "sha256-DashyY5fmAj4Q2DJL326MGZDiLb3tBkxuj572eCBTyI=";
+    hash = "sha256-+fp7LMHTVvqK3IBvqv61ZOAdfH/dZPIDcNQPXkTZmME=";
   };
 
   cargoPatches = [ ./patches/0001-make-near-test-contracts-optional.patch ];
-  cargoHash = "sha256-1UXhN+gyErnln8yv7fHsGPu632EFHGti9HyQ2500+mE=";
+  cargoHash = "sha256-hVZZJim4s0qxFxWAFFTM7U1Qi1gwuGrHJ6kThNqj6oE=";
 
   postPatch = ''
     substituteInPlace neard/build.rs \
