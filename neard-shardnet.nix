@@ -48,7 +48,7 @@ rustPlatform.buildRustPackage rec {
 
   postPatch = ''
     substituteInPlace neard/build.rs \
-      --replace 'get_git_version()?' '"nix:${version}"'
+      --replace 'get_git_version()?' '"zentria-nix:${version}"'
   '';
 
   CARGO_PROFILE_RELEASE_CODEGEN_UNITS = "1";
