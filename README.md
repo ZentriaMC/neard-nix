@@ -15,3 +15,7 @@ Note: only x86\_64-linux is cached automatically.
 
 URL: `https://zentria-near.cachix.org`  
 Public key: `zentria-near.cachix.org-1:BKvOv13hKSkWX5RZpLs9Da5b5ZCySBdYFWukCvR5YVY=`
+
+## Donate
+
+NEAR: `zentria.near`
