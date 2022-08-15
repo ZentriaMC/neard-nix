@@ -9,6 +9,8 @@
 , pkg-config
 , rustPlatform
 , CoreFoundation
+, DiskArbitration
+, Foundation
 , IOKit
 , Security
 , features ? [ ]
@@ -23,6 +25,8 @@ rustPlatform.buildRustPackage rec {
     openssl
   ] ++ lib.optionals stdenv.isDarwin [
     CoreFoundation
+    DiskArbitration
+    Foundation
     IOKit
     Security
   ];
