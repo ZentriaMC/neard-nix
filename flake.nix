@@ -46,7 +46,7 @@
         };
 
         packages.neard-rc = pkgs.callPackage ./neard-rc.nix {
-          rustPlatform = mkRustPlatform "stable" "1.61.0";
+          rustPlatform = mkRustPlatform "stable" "1.63.0";
           inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation IOKit Security;
         };
 
