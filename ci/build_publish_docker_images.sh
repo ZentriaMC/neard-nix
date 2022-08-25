@@ -29,6 +29,7 @@ drvs=(
         neardDockerImage
         neardRcDockerImage
         neardShardnetDockerImage
+        neardRcShardnetDockerImage
 )
 
 for drv in "${drvs[@]}"; do
