@@ -40,7 +40,7 @@ rustPlatform.buildRustPackage rec {
     owner = "near";
     repo = "nearcore";
     rev = "refs/tags/${version}";
-    hash = "sha256-sqBJMHw6kKxZI9MWWW9cQL0Njn05lyyFDYQwt93veV8=";
+    hash = "sha256-H3kYYUrWuvQ1oG0NBSyAg34leWRHG2F4nUG2zkw6Zr8=";
   };
 
   cargoPatches = [ ./patches/0001-make-near-test-contracts-optional.patch ];
