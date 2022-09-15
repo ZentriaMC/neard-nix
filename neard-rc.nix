@@ -7,6 +7,7 @@
 , openssl
 , perl
 , pkg-config
+, protobuf
 , rustPlatform
 , CoreFoundation
 , DiskArbitration
@@ -30,7 +31,7 @@ rustPlatform.buildRustPackage rec {
     IOKit
     Security
   ];
-  nativeBuildInputs = [ clang llvm.out perl pkg-config ];
+  nativeBuildInputs = [ clang llvm.out perl pkg-config protobuf ];
 
   OPENSSL_NO_VENDOR = 1; # we want to link to OpenSSL provided by Nix
   LIBCLANG_PATH = "${llvmPackages.libclang.lib}/lib";
