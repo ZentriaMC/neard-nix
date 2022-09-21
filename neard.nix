@@ -7,15 +7,18 @@
 , openssl
 , perl
 , pkg-config
+, protobuf
 , rustPlatform
 , CoreFoundation
+, DiskArbitration
+, Foundation
 , IOKit
 , Security
 , features ? [ ]
 }:
 rustPlatform.buildRustPackage rec {
   pname = "neard";
-  version = "1.28.1";
+  version = "1.29.0";
 
   buildInputs = [
     llvm
@@ -23,10 +26,12 @@ rustPlatform.buildRustPackage rec {
     openssl
   ] ++ lib.optionals stdenv.isDarwin [
     CoreFoundation
+    DiskArbitration
+    Foundation
     IOKit
     Security
   ];
-  nativeBuildInputs = [ clang llvm.out perl pkg-config ];
+  nativeBuildInputs = [ clang llvm.out perl pkg-config protobuf ];
 
   OPENSSL_NO_VENDOR = 1; # we want to link to OpenSSL provided by Nix
   LIBCLANG_PATH = "${llvmPackages.libclang.lib}/lib";
@@ -36,11 +41,11 @@ rustPlatform.buildRustPackage rec {
     owner = "near";
     repo = "nearcore";
     rev = "refs/tags/${version}";
-    hash = "sha256-lAbVcmr8StAZAII++21xiBd4tRcdprefvcGzPLIjl74=";
+    hash = "sha256-TOZ6j4CaiOXmNn8kgVGP27SjvLDlGvabAA+PAEyFXIk=";
   };
 
   cargoPatches = [ ./patches/0001-make-near-test-contracts-optional.patch ];
-  cargoHash = "sha256-4mqCLBudfsghguQ/c+XzhOAjHzd90fZcwq1UoQyJHeo=";
+  cargoHash = "sha256-LFYWkQY7UcFg0aImfS3cWGKviRdG+gP9Vv2QUZgxtsg=";
 
   postPatch = ''
     substituteInPlace neard/build.rs \
