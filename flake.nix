@@ -59,6 +59,7 @@
            , coreutils
            , curl
            , dumb-init
+           , jq
            , iana-etc
            , neard
            , s5cmd
@@ -99,6 +100,7 @@
                       coreutils
                       curl
                       dumb-init
+                      jq
                       neard
                       s5cmd
                     ];
