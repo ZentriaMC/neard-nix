@@ -10,7 +10,6 @@
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
     rust-overlay.inputs.flake-utils.follows = "flake-utils";
     docker-tools.inputs.nixpkgs.follows = "nixpkgs";
-    docker-tools.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs = { self, nixpkgs, rust-overlay, flake-utils, docker-tools, ... }:
