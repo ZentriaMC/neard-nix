@@ -158,6 +158,7 @@
             pkgs.cachix
             pkgs.jq
             pkgs.skopeo
+            pkgs.cosign
           ];
         };
       });
