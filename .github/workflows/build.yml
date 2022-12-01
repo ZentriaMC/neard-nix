@@ -24,7 +24,7 @@ jobs:
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
       - name: "Setup Cachix"
-        uses: "cachix/cachix-action@v10"
+        uses: "cachix/cachix-action@v12"
         with:
           name: zentria-near
 
