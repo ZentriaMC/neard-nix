@@ -14,6 +14,7 @@
 
   nixConfig = {
     substituters = [ "https://cache.nixos.org" "https://zentria-near.cachix.org" ];
+    trusted-substituters = [ "https://cache.nixos.org" "https://zentria-near.cachix.org" ];
     trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" "zentria-near.cachix.org-1:BKvOv13hKSkWX5RZpLs9Da5b5ZCySBdYFWukCvR5YVY=" ];
   };
 
