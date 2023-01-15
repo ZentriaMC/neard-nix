@@ -1,10 +1,10 @@
-From a17f7bc3cdc681d8df797375694eb8659083af9b Mon Sep 17 00:00:00 2001
+From f92127bb108643e205f272a733d773770a916fe6 Mon Sep 17 00:00:00 2001
 From: Mark Vainomaa <mikroskeem@mikroskeem.eu>
 Date: Tue, 3 Jan 2023 15:17:05 +0200
 Subject: [PATCH] Make near-test-contracts optional
 
 ---
- Cargo.lock                                  | 22 ---------------------
+ Cargo.lock                                  | 24 +--------------------
  genesis-tools/genesis-populate/Cargo.toml   |  2 +-
  integration-tests/Cargo.toml                |  2 +-
  runtime/near-vm-runner/Cargo.toml           |  2 +-
@@ -15,10 +15,10 @@ Subject: [PATCH] Make near-test-contracts optional
  test-utils/testlib/Cargo.toml               |  2 +-
  tools/amend-genesis/Cargo.toml              |  2 +-
  tools/state-viewer/Cargo.toml               |  2 +-
- 11 files changed, 11 insertions(+), 33 deletions(-)
+ 11 files changed, 12 insertions(+), 34 deletions(-)
 
 diff --git a/Cargo.lock b/Cargo.lock
-index 1a9d208b0..9e662894b 100644
+index 039b03841..7aacbbc61 100644
 --- a/Cargo.lock
 +++ b/Cargo.lock
 @@ -1946,7 +1946,6 @@ dependencies = [
@@ -80,6 +80,15 @@ index 1a9d208b0..9e662894b 100644
   "near-vm-errors",
   "near-vm-logic",
   "near-vm-runner",
+@@ -3718,7 +3701,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "neard"
+-version = "1.31.0-rc.1"
++version = "1.31.0-rc.2"
+ dependencies = [
+  "actix",
+  "ansi_term",
 @@ -3783,7 +3766,6 @@ dependencies = [
   "near-o11y",
   "near-primitives",
