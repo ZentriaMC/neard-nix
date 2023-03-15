@@ -6,7 +6,6 @@ This targets latest stable and RC versions.
 
 ## Docker images
 
-See [docker.io/zentria/neard-nix](https://hub.docker.com/r/zentria/neard-nix/tags)  
 See [ghcr.io/zentriamc/neard-nix/neard](https://github.com/ZentriaMC/neard-nix/pkgs/container/neard-nix%2Fneard)
 
 ## Cache

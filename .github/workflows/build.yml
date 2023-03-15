@@ -58,11 +58,9 @@ jobs:
           export XDG_RUNTIME_DIR="${TMPDIR}/xdg"
           mkdir -p "${XDG_RUNTIME_DIR}"
           echo '${{ secrets.GHCR_PAT }}'       | nix develop .#ci --command skopeo --tmpdir=$TMPDIR login ghcr.io --username='${{ github.actor }}' --password-stdin
-          echo '${{ secrets.DOCKER_HUB_PAT }}' | nix develop .#ci --command skopeo --tmpdir=$TMPDIR login docker.io --username='${{ secrets.DOCKER_HUB_USERNAME }}' --password-stdin
 
           repositories=(
             ghcr.io/zentriamc/neard-nix/neard
-            docker.io/zentria/neard-nix
           )
           for repository in "${repositories[@]}"; do
             env DOCKER_REPOSITORY="${repository}" \

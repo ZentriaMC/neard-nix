@@ -3,7 +3,7 @@ set -euo pipefail
 
 # nix develop .#ci --command "./ci/build_publish_docker_images.sh"
 
-repo="${DOCKER_REPOSITORY:-docker.io/zentria/neard-nix}"
+repo="${DOCKER_REPOSITORY:-ghcr.io/zentriamc/neard-nix/neard}"
 current_system="$(nix-instantiate --eval -E --json 'builtins.currentSystem' | jq -r '.')"
 system="${current_system/-darwin/-linux}"
 
