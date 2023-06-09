@@ -4,6 +4,7 @@
 , clang
 , llvm
 , llvmPackages
+, mold
 , openssl
 , perl
 , pkg-config
@@ -23,6 +24,7 @@ rustPlatform.buildRustPackage rec {
   buildInputs = [
     llvm
     llvmPackages.libclang.lib
+    mold
     openssl
   ] ++ lib.optionals stdenv.isDarwin [
     CoreFoundation
@@ -54,7 +56,11 @@ rustPlatform.buildRustPackage rec {
 
   CARGO_PROFILE_RELEASE_CODEGEN_UNITS = "1";
   CARGO_PROFILE_RELEASE_LTO = "thin";
-  RUSTFLAGS = "-D warnings";
+
+  CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER = "clang";
+  RUSTFLAGS = ["-D" "warnings"] ++ lib.optionals (!stdenv.isDarwin) [
+    "-C" "link-arg=-fuse-ld=${mold}/bin/mold"
+  ];
   NEAR_RELEASE_BUILD = "release";
 
   cargoBuildFlags = lib.optional (features != [ ]) "--features=${lib.concatStringsSep "," features}";
