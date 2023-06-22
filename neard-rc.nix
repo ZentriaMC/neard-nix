@@ -19,7 +19,7 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "neard-rc";
-  version = "1.34.0-rc.2";
+  version = "1.35.0-rc.1";
 
   buildInputs = [
     llvm
@@ -43,11 +43,11 @@ rustPlatform.buildRustPackage rec {
     owner = "near";
     repo = "nearcore";
     rev = "refs/tags/${version}";
-    hash = "sha256-KMfd07fPu4LGskCceQjMzq3veZ50d+5Jv5n8ELQnQ8k=";
+    hash = "sha256-gNYPs19Ot7x2w4Lp8p0H4p0iOg8eVmdfxCTsumPrRz0=";
   };
 
-  cargoPatches = [ ./patches/1.34.0/0001-Make-near-test-contracts-optional.patch ];
-  cargoHash = "sha256-HB5PR4K3/lj315CQ6NSj16QGGewzoHI3MR4AghYpBBs=";
+  cargoPatches = [ ./patches/1.35.0/0001-Make-near-test-contracts-optional.patch ];
+  cargoHash = "sha256-+YfUp0BOjLiVU4TycF2zH3myAJbSaBJ7Hl3dt/K3cm0=";
 
   postPatch = ''
     substituteInPlace neard/build.rs \
