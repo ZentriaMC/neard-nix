@@ -26,6 +26,8 @@ if [ -n "${COSIGN_KEY+x}" ] && [ "${COSIGN_SKIP:-false}" = "false" ]; then
 	sum="$(COSIGN_PASSWORD="$(echo -n "${COSIGN_PASSWORD}" | base64 -d)" cosign public-key --key <(echo -n "${COSIGN_KEY}" | base64 -d) | sha256sum - | cut -d' ' -f1)"
 	echo "Signing images with key '${sum}' (sha256)"
 
+	export COSIGN_DOCKER_MEDIA_TYPES=1
+
 	sign_images=1
 fi
 
@@ -62,8 +64,8 @@ for drv in "${drvs[@]}"; do
 		)
 
 		COSIGN_PASSWORD="$(echo -n "${COSIGN_PASSWORD}" | base64 -d)" cosign sign \
+			--yes \
 			--key <(echo -n "${COSIGN_KEY}" | base64 -d) \
-			--tlog-upload=false \
 			"${annotations[@]}" \
 			"${repo}@$(< "${digest_file}")"
 	fi
