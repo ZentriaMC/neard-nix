@@ -144,6 +144,22 @@
           tag = neard.version;
         });
 
+        cargoDeps =
+          let
+            allDeps' = map
+              (p:
+                let
+                  pkg = packages.${p};
+                in
+                if (pkg ? cargoDeps)
+                then { name = p; value = pkg.cargoDeps; }
+                else null
+              )
+              (builtins.attrNames packages);
+          in
+          builtins.listToAttrs
+            (builtins.filter (p: p != null) allDeps');
+
         defaultPackage = packages.neard;
 
         devShell = pkgs.mkShell {
@@ -158,6 +174,7 @@
             pkgs.cachix
             pkgs.jq
             pkgs.skopeo
+            pkgs.cosign
           ];
         };
       });
