@@ -48,6 +48,12 @@ jobs:
 
       - name: "Build & push Docker images"
         if: "github.event_name == 'push' && github.ref == 'refs/heads/master'"
+        env:
+          COSIGN_KEY: "${{ secrets.COSIGN_KEY }}"
+          COSIGN_PASSWORD: "${{ secrets.COSIGN_PASSWORD }}"
+          Z_GITHUB_REF: "${{ github.sha }}"
+          Z_GITHUB_REPO: "${{ github.repository }}"
+          Z_GITHUB_WORKFLOW: "${{ github.workflow }}"
         run: |-
           set -euo pipefail
           set -x
@@ -59,9 +65,6 @@ jobs:
           echo '${{ secrets.GHCR_PAT }}'       | nix develop .#ci --command cosign login ghcr.io --username='${{ github.actor }}' --password-stdin
           echo '${{ secrets.DOCKER_HUB_PAT }}' | nix develop .#ci --command skopeo --tmpdir=$TMPDIR login docker.io --username='${{ secrets.DOCKER_HUB_USERNAME }}' --password-stdin
           echo '${{ secrets.DOCKER_HUB_PAT }}' | nix develop .#ci --command cosign login docker.io --username='${{ secrets.DOCKER_HUB_USERNAME }}' --password-stdin
-
-          export COSIGN_KEY='${{ secrets.COSIGN_KEY }}'
-          export COSIGN_PASSWORD='${{ secrets.COSIGN_PASSWORD }}'
 
           repositories=(
             ghcr.io/zentriamc/neard-nix/neard

@@ -55,6 +55,12 @@ for drv in "${drvs[@]}"; do
 	skopeo "${skopeo_flags[@]}" copy "${skopeo_image_args[@]}"
 
 	if (( sign_images )); then
+		annotations=(
+			-a "repo=${Z_GITHUB_REPO:-unset}"
+			-a "workflow=${Z_GITHUB_WORKFLOW:-unset}"
+			-a "ref=${Z_GITHUB_REF:-unset}"
+		)
+
 		COSIGN_PASSWORD="$(echo -n "${COSIGN_PASSWORD}" | base64 -d)" cosign sign \
 			--key <(echo -n "${COSIGN_KEY}" | base64 -d) \
 			--tlog-upload=false \
