@@ -46,7 +46,7 @@ rustPlatform.buildRustPackage rec {
     hash = "sha256-gNYPs19Ot7x2w4Lp8p0H4p0iOg8eVmdfxCTsumPrRz0=";
   };
 
-  cargoPatches = [ ./patches/1.35.0/0001-Make-near-test-contracts-optional.patch ];
+  cargoPatches = [ ./patches/1.35.0-rc.1/0001-Make-near-test-contracts-optional.patch ];
   cargoHash = "sha256-+YfUp0BOjLiVU4TycF2zH3myAJbSaBJ7Hl3dt/K3cm0=";
 
   postPatch = ''
