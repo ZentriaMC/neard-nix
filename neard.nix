@@ -66,6 +66,15 @@ rustPlatform.buildRustPackage rec {
   cargoBuildFlags = lib.optional (features != [ ]) "--features=${lib.concatStringsSep "," features}";
   doCheck = false; # tests only few CLI things
 
+  doInstallCheck = true;
+  installCheckPhase = ''
+    runHook preInstallCheck
+
+    $out/bin/neard --version
+
+    runHook postInstallCheck
+  '';
+
   meta = with lib; {
     platforms = platforms.linux ++ platforms.darwin;
     broken = stdenv.isAarch64 && !stdenv.isDarwin;
