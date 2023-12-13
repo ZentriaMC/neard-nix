@@ -1,4 +1,4 @@
-From 0464a16fadee693952ce05e15f014f6e2b211a62 Mon Sep 17 00:00:00 2001
+From 5eb6f71626d916fd610c24323267b4e57573950e Mon Sep 17 00:00:00 2001
 From: Mark Vainomaa <mikroskeem@mikroskeem.eu>
 Date: Tue, 9 May 2023 17:35:30 +0300
 Subject: [PATCH] Make near-test-contracts optional
@@ -18,7 +18,7 @@ Subject: [PATCH] Make near-test-contracts optional
  11 files changed, 10 insertions(+), 32 deletions(-)
 
 diff --git a/Cargo.lock b/Cargo.lock
-index 1c48b578f..973ae8459 100644
+index e76701fb7..b4bdcee8c 100644
 --- a/Cargo.lock
 +++ b/Cargo.lock
 @@ -2382,7 +2382,6 @@ dependencies = [
@@ -51,7 +51,7 @@ index 1c48b578f..973ae8459 100644
  
 -[[package]]
 -name = "near-test-contracts"
--version = "1.36.0"
+-version = "1.36.1"
 -dependencies = [
 - "arbitrary",
 - "once_cell",
@@ -63,7 +63,7 @@ index 1c48b578f..973ae8459 100644
 -
  [[package]]
  name = "near-undo-block"
- version = "1.36.0"
+ version = "1.36.1"
 @@ -4435,7 +4420,6 @@ dependencies = [
   "near-primitives",
   "near-primitives-core",
