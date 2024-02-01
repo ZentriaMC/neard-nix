@@ -23,7 +23,7 @@ jobs:
             accept-flake-config = true
 
       - name: "Set up Nix caching"
-        uses: "DeterminateSystems/magic-nix-cache-action@v2"
+        uses: "DeterminateSystems/magic-nix-cache-action@v3"
 
       - name: "Build neard"
         run: |-
